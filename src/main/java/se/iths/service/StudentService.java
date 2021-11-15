@@ -21,6 +21,10 @@ public class StudentService {
         entityManager.merge(student);
     }
 
+    public Student findStudentById(Long id) {
+        return entityManager.find(Student.class, id);
+    }
+
     public List<Student> getAllStudents() {
         return entityManager.createQuery("SELECT s from Student s", Student.class).getResultList();
     }

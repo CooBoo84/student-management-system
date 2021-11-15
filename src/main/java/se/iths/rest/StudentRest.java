@@ -31,6 +31,13 @@ public class StudentRest {
         return Response.ok(student).build();
     }
 
+    @Path("{id}")
+    @GET
+    public Response getStudent(@PathParam("id") Long id){
+        Student foundStudent = studentService.findStudentById(id);
+        return Response.ok(foundStudent).build();
+    }
+
     @Path("")
     @GET
     public Response getAllStudents(){
