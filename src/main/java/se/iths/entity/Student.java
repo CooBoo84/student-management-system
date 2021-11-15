@@ -1,6 +1,5 @@
 package se.iths.entity;
 
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -27,7 +26,7 @@ public class Student {
     @Email(message = "Invalid email. Try again.")
     private String email;
 
-    @Digits(integer = 15, fraction = 0)
+    @Digits(integer = 15, fraction = 0, message = "Should only contain numbers 0-9")
     private String phoneNumber;
 
     public Long getId() {
