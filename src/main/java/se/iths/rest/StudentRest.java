@@ -45,5 +45,12 @@ public class StudentRest {
         return Response.ok(foundStudents).build();
     }
 
+    @Path("{id}")
+    @DELETE
+    public Response deleteStudent(@PathParam("id") Long id){
+        studentService.deleteStudent(id);
+        return Response.ok().build();
+    }
+
 
 }
