@@ -15,4 +15,8 @@ public class StudentService {
     public void createStudent(Student student) {
         entityManager.persist(student);
     }
+
+    public void updateStudent(Student student) {
+        entityManager.merge(student);
+    }
 }
