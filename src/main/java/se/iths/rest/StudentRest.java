@@ -21,6 +21,10 @@ public class StudentRest {
     @Path("{id}")
     public Response getStudent(@PathParam("id") Long id){
         Student foundStudent = studentService.findStudentById(id);
+        if (foundStudent == null) {
+            throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND)
+                    .entity("NoRecordOfId:" +id)
+                    .type(MediaType.APPLICATION_JSON).build()); }
         return Response.ok(foundStudent).build();
     }
 
@@ -28,6 +32,10 @@ public class StudentRest {
     @Path("search")
     public Response findByLastName(@QueryParam("lastName") String lastName) {
         List<Student> students = studentService.getStudentByLastName(lastName);
+        if (students.isEmpty()) {
+            throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND)
+                    .entity("NoRecordInDatabaseWithLastname:" +lastName)
+                    .type(MediaType.APPLICATION_JSON).build()); }
         return Response.ok(students).build();
     }
 
@@ -35,7 +43,12 @@ public class StudentRest {
     @Path("")
     public Response getAllStudents(){
         List<Student> foundStudents = studentService.getAllStudents();
-        return Response.ok(foundStudents).build();
+        if (foundStudents.isEmpty()) {
+            throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND)
+                    .entity("NoRecordsInDatabase")
+                    .type(MediaType.APPLICATION_JSON).build());
+        } else
+            return Response.ok(foundStudents).build();
     }
 
     @POST
