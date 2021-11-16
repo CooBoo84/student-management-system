@@ -17,16 +17,16 @@ public class Student {
     private Long id;
 
     @NotEmpty
-    @Size(min = 2, message = "Firstname too short!")
+    @Size(min = 2)
     private String firstName;
     @NotEmpty
-    @Size(min = 2, message = "Lastname too short!")
+    @Size(min = 2)
     private String lastName;
     @NotEmpty
-    @Email(message = "Invalid email. Try again.")
+    @Email
     private String email;
 
-    @Digits(integer = 15, fraction = 0, message = "Should only contain numbers 0-9")
+    @Digits(integer = 15, fraction = 0)
     private String phoneNumber;
 
     public Long getId() {
