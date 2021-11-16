@@ -45,7 +45,7 @@ public class StudentRest {
         List<Student> foundStudents = studentService.getAllStudents();
         if (foundStudents.isEmpty()) {
             throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND)
-                    .entity("NoRecordsInDatabase")
+                    .entity("DatabaseIsEmpty")
                     .type(MediaType.APPLICATION_JSON).build());
         } else
             return Response.ok(foundStudents).build();
@@ -100,6 +100,11 @@ public class StudentRest {
     @DELETE
     @Path("{id}")
     public Response deleteStudent(@PathParam("id") Long id){
+        if (studentService.findStudentById(id) == null) {
+            throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND)
+                    .entity("Delete-NoRecordWithId: " + id)
+                    .type(MediaType.APPLICATION_JSON_TYPE).build());
+        }
         studentService.deleteStudent(id);
         return Response.ok().build();
     }
