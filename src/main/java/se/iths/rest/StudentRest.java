@@ -1,6 +1,8 @@
 package se.iths.rest;
 
 import se.iths.entity.Student;
+import se.iths.exception.NotAcceptableExecption;
+import se.iths.exception.NotFoundException;
 import se.iths.service.StudentService;
 
 import javax.inject.Inject;
@@ -22,9 +24,7 @@ public class StudentRest {
     public Response getStudent(@PathParam("id") Long id){
         Student foundStudent = studentService.findStudentById(id);
         if (foundStudent == null) {
-            throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND)
-                    .entity("NoRecordOfId:" +id)
-                    .type(MediaType.APPLICATION_JSON).build()); }
+            throw new NotFoundException("NoRecordOfId: " +id); }
         return Response.ok(foundStudent).build();
     }
 
@@ -33,9 +33,7 @@ public class StudentRest {
     public Response findByLastName(@QueryParam("lastName") String lastName) {
         List<Student> students = studentService.getStudentByLastName(lastName);
         if (students.isEmpty()) {
-            throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND)
-                    .entity("NoRecordInDatabaseWithLastname:" +lastName)
-                    .type(MediaType.APPLICATION_JSON).build()); }
+            throw new NotFoundException("NoRecordInDatabaseWithLastname:" +lastName); }
         return Response.ok(students).build();
     }
 
@@ -44,9 +42,7 @@ public class StudentRest {
     public Response getAllStudents(){
         List<Student> foundStudents = studentService.getAllStudents();
         if (foundStudents.isEmpty()) {
-            throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND)
-                    .entity("DatabaseIsEmpty")
-                    .type(MediaType.APPLICATION_JSON).build());
+            throw new NotFoundException("DatabaseIsEmpty");
         } else
             return Response.ok(foundStudents).build();
     }
@@ -55,21 +51,15 @@ public class StudentRest {
     @Path("")
     public Response createStudent(Student student){
         if (student.getFirstName().isEmpty() || student.getFirstName().getBytes().length < 2) {
-            throw new WebApplicationException(Response.status(Response.Status.NOT_ACCEPTABLE)
-                    .entity("Firstname-Minimum2Characters")
-                    .type(MediaType.APPLICATION_JSON).build());
+            throw new NotAcceptableExecption("Firstname-Minimum2Characters");
         }
 
         if (student.getLastName().isEmpty() || student.getLastName().getBytes().length < 2) {
-            throw new WebApplicationException(Response.status(Response.Status.NOT_ACCEPTABLE)
-                    .entity("Lastname-Minimum2Characters")
-                    .type(MediaType.APPLICATION_JSON).build());
+            throw new NotFoundException("Lastname-Minimum2Characters");
         }
 
         if (student.getEmail().isEmpty() || !student.getEmail().contains("@")) {
-            throw new WebApplicationException(Response.status(Response.Status.NOT_ACCEPTABLE)
-                    .entity("Email-EmailIsRequiredAndWithCharacter@")
-                    .type(MediaType.APPLICATION_JSON).build());
+            throw new NotAcceptableExecption("Email-EmailIsRequiredAndWithCharacter@");
         }
         studentService.createStudent(student);
         return Response.ok(student).status(Response.Status.CREATED).build();
@@ -79,19 +69,13 @@ public class StudentRest {
     @Path("")
     public Response updateStudent(Student student){
         if (student.getFirstName().isEmpty() || student.getFirstName().getBytes().length < 2) {
-            throw new WebApplicationException(Response.status(Response.Status.NOT_ACCEPTABLE)
-                    .entity("Firstname-Invalid")
-                    .type(MediaType.APPLICATION_JSON_TYPE).build());
+            throw new NotAcceptableExecption("Firstname-Invalid");
         }
         if (student.getLastName().isEmpty() || student.getLastName().getBytes().length < 2) {
-            throw new WebApplicationException(Response.status(Response.Status.NOT_ACCEPTABLE)
-                    .entity("Lastname-Invalid")
-                    .type(MediaType.APPLICATION_JSON_TYPE).build());
+            throw new NotAcceptableExecption("Lastname-Invalid");
         }
         if (student.getEmail().isEmpty() || !student.getEmail().contains("@")) {
-            throw new WebApplicationException(Response.status(Response.Status.NOT_ACCEPTABLE)
-                    .entity("Email-Invalid")
-                    .type(MediaType.APPLICATION_JSON_TYPE).build());
+            throw new NotAcceptableExecption("Email-Invalid");
         }
         studentService.updateStudent(student);
         return Response.ok(student).build();
@@ -101,9 +85,7 @@ public class StudentRest {
     @Path("{id}")
     public Response deleteStudent(@PathParam("id") Long id){
         if (studentService.findStudentById(id) == null) {
-            throw new WebApplicationException(Response.status(Response.Status.NOT_FOUND)
-                    .entity("Delete-NoRecordWithId: " + id)
-                    .type(MediaType.APPLICATION_JSON_TYPE).build());
+            throw new NotFoundException("Delete-NoRecordWithId: " + id);
         }
         studentService.deleteStudent(id);
         return Response.ok().build();
