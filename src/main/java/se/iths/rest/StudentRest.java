@@ -78,6 +78,21 @@ public class StudentRest {
     @PUT
     @Path("")
     public Response updateStudent(Student student){
+        if (student.getFirstName().isEmpty() || student.getFirstName().getBytes().length < 2) {
+            throw new WebApplicationException(Response.status(Response.Status.NOT_ACCEPTABLE)
+                    .entity("Firstname-Invalid")
+                    .type(MediaType.APPLICATION_JSON_TYPE).build());
+        }
+        if (student.getLastName().isEmpty() || student.getLastName().getBytes().length < 2) {
+            throw new WebApplicationException(Response.status(Response.Status.NOT_ACCEPTABLE)
+                    .entity("Lastname-Invalid")
+                    .type(MediaType.APPLICATION_JSON_TYPE).build());
+        }
+        if (student.getEmail().isEmpty() || !student.getEmail().contains("@")) {
+            throw new WebApplicationException(Response.status(Response.Status.NOT_ACCEPTABLE)
+                    .entity("Email-Invalid")
+                    .type(MediaType.APPLICATION_JSON_TYPE).build());
+        }
         studentService.updateStudent(student);
         return Response.ok(student).build();
     }
