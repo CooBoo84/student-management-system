@@ -54,6 +54,23 @@ public class StudentRest {
     @POST
     @Path("")
     public Response createStudent(Student student){
+        if (student.getFirstName().isEmpty() || student.getFirstName().getBytes().length < 2) {
+            throw new WebApplicationException(Response.status(Response.Status.NOT_ACCEPTABLE)
+                    .entity("Firstname-Minimum2Characters")
+                    .type(MediaType.APPLICATION_JSON).build());
+        }
+
+        if (student.getLastName().isEmpty() || student.getLastName().getBytes().length < 2) {
+            throw new WebApplicationException(Response.status(Response.Status.NOT_ACCEPTABLE)
+                    .entity("Lastname-Minimum2Characters")
+                    .type(MediaType.APPLICATION_JSON).build());
+        }
+
+        if (student.getEmail().isEmpty() || !student.getEmail().contains("@")) {
+            throw new WebApplicationException(Response.status(Response.Status.NOT_ACCEPTABLE)
+                    .entity("Email-EmailIsRequiredAndWithCharacter@")
+                    .type(MediaType.APPLICATION_JSON).build());
+        }
         studentService.createStudent(student);
         return Response.ok(student).status(Response.Status.CREATED).build();
     }
