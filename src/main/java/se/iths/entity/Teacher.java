@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Student {
+public class Teacher {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,26 +25,25 @@ public class Student {
     @NotEmpty
     @Email
     private String email;
-
     @Digits(integer = 15, fraction = 0)
     private String phoneNumber;
 
-    @ManyToMany(mappedBy = "student", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL)
     private List<Subject> subjects = new ArrayList<>();
 
-    public void addSubject(Subject subject){
+    private void addSubject(Subject subject){
         subjects.add(subject);
-        subject.setStudent(this);
+        subject.setTeacher(this);
     }
 
-    public Student(String firstName, String lastName, String email, String phoneNumber) {
+    public Teacher(String firstName, String lastName, String email, String phoneNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phoneNumber = phoneNumber;
     }
 
-    public Student() {
+    public Teacher() {
     }
 
     public Long getId() {
@@ -88,10 +87,6 @@ public class Student {
     }
 
     @JsonbTransient
-    public List<Subject> getSubjects(){
-        return subjects;
-    }
-    public void setSubjects(List<Subject> subjects){
-        this.subjects = subjects;
-    }
+    public List<Subject> getSubjects(){ return subjects; }
+    public void setSubjects(List<Subject> subjects) { this.subjects = subjects; }
 }
