@@ -14,7 +14,7 @@ public class Subject {
     @NotEmpty
     private String name;
 
-    @ManyToMany(mappedBy = "subject", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "subjects", cascade = CascadeType.ALL)
     private List<Student> students = new ArrayList<>();
 
     @ManyToOne

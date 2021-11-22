@@ -29,7 +29,7 @@ public class Student {
     @Digits(integer = 15, fraction = 0)
     private String phoneNumber;
 
-    @ManyToMany(mappedBy = "student", cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL)
     private List<Subject> subjects = new ArrayList<>();
 
     public void addSubject(Subject subject){
