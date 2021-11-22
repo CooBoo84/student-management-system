@@ -31,10 +31,6 @@ public class Teacher {
     @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL)
     private List<Subject> subjects = new ArrayList<>();
 
-    private void addSubject(Subject subject){
-        subjects.add(subject);
-        subject.setTeacher(this);
-    }
 
     public Teacher(String firstName, String lastName, String email, String phoneNumber) {
         this.firstName = firstName;
@@ -85,8 +81,4 @@ public class Teacher {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
-
-    @JsonbTransient
-    public List<Subject> getSubjects(){ return subjects; }
-    public void setSubjects(List<Subject> subjects) { this.subjects = subjects; }
 }

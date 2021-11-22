@@ -2,8 +2,8 @@ package se.iths.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 public class Subject {
@@ -13,27 +13,19 @@ public class Subject {
     private Long id;
     @NotEmpty
     private String name;
-    @ManyToMany
-    private Student student;
+
+    @ManyToMany(mappedBy = "subject", cascade = CascadeType.ALL)
+    private List<Student> students = new ArrayList<>();
 
     @ManyToOne
     private Teacher teacher;
 
-    public Subject(String name, Student student, Teacher teacher) {
+    public Subject(String name, Teacher teacher) {
         this.name = name;
-        this.student = student;
         this.teacher = teacher;
     }
 
     public Subject() {
-    }
-
-    public void setStudent(Student student){
-        this.student = student;
-    }
-
-    public void setTeacher(Teacher teacher){
-        this.teacher = teacher;
     }
 
     public Long getId() {
@@ -52,4 +44,19 @@ public class Subject {
         this.name = name;
     }
 
+    public List<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<Student> students) {
+        this.students = students;
+    }
+
+    public Teacher getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
+    }
 }

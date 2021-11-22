@@ -34,7 +34,7 @@ public class Student {
 
     public void addSubject(Subject subject){
         subjects.add(subject);
-        subject.setStudent(this);
+        subject.getStudents().add(this);
     }
 
     public Student(String firstName, String lastName, String email, String phoneNumber) {
