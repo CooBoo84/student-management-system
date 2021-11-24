@@ -30,13 +30,13 @@ public class SampleDataGenerator {
 
         Subject subject1 = new Subject("Java",teacher1);
         Subject subject2 = new Subject("Python", teacher1);
-        Subject subject3 = new Subject("C#",teacher2);
+        Subject subject3 = new Subject("C",teacher2);
 
         student1.addSubject(subject1);
         student1.addSubject(subject2);
         student2.addSubject(subject1);
         student3.addSubject(subject2);
-        student4.addSubject(subject2);
+        student4.addSubject(subject3);
 
 
         entityManager.persist(student1);
