@@ -23,13 +23,7 @@ public class SubjectService {
         return entityManager.createQuery("SELECT i FROM Subject i", Subject.class).getResultList();
     }
 
-    public List<Student> findStudentsBySubject(String subject){
-        Subject s =  entityManager.createQuery("SELECT s FROM Subject s  WHERE s.name = :sub", Subject.class).setParameter("sub",subject).getSingleResult();
-        Long id = s.getId();
-        return entityManager.find(Subject.class, id).getStudents();
-    }
-
-    public List<Subject> findSubjectByName(String subject) {
+    public List<Subject> getSubjectStudentsTeacherBySubjectName(String subject) {
         return entityManager
                 .createQuery("SELECT s FROM Subject s WHERE s.name =\'" + subject + "\'", Subject.class)
                 .getResultList();

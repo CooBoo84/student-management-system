@@ -1,6 +1,7 @@
 package se.iths.rest;
 
 import se.iths.entity.Student;
+import se.iths.entity.Subject;
 import se.iths.entity.Teacher;
 import se.iths.exception.NotAcceptableExecption;
 import se.iths.exception.NotFoundException;
@@ -51,7 +52,11 @@ public class TeacherRest {
     @GET
     @Path("getstudentbysubjectandteacher/{subject}/{teacher}")
     public List<Student> getStudentBySubjectAndTeacher(@PathParam("subject") String subject, @PathParam("teacher") String teacher){
+        if(verifyThatTeacherAndSubjectExists(teacherService.foundTeachertByName(teacher),teacherService.foundSubjectByName(subject)))
             return teacherService.getSpecifiedStudentsPerSubjectandTeacher(subject,teacher);
+        else{
+            throw new NotFoundException("One or more parameters match no result. Make sure you spell both subject's name and teacher's first name right, as well as both exists in registry");
+        }
     }
 
     @POST
@@ -94,5 +99,22 @@ public class TeacherRest {
         }
         teacherService.deleteTeacher(id);
         return Response.ok().build();
+    }
+
+    public Boolean verifyThatTeacherAndSubjectExists(Boolean teacher, Boolean subject){
+        Boolean bothExists = null;
+        if(teacher && subject)
+            bothExists = true;
+        if (!teacher && subject){
+            bothExists = false;
+        }
+        if (!subject && teacher){
+            bothExists = false;
+        }
+        else if (!subject && !teacher) {
+            bothExists = false;
+        }
+        return bothExists;
+
     }
 }

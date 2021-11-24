@@ -2,6 +2,8 @@ package se.iths.rest;
 
 import se.iths.entity.Student;
 import se.iths.entity.Subject;
+import se.iths.exception.NotAcceptableExecption;
+import se.iths.exception.NotFoundException;
 import se.iths.service.SubjectService;
 
 import javax.inject.Inject;
@@ -11,7 +13,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
-@Path("subject")
+@Path("subjects")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class SubjectRest {
@@ -20,35 +22,30 @@ public class SubjectRest {
     SubjectService subjectService;
 
     @GET
-    @Path("{subjectName}")
-    public List<Subject> getSubjectByName(@PathParam("subjectName") String category) {
-        List<Subject> foundSubjects = subjectService.findSubjectByName(category);
-        if( !foundSubjects.isEmpty()) {
-            return subjectService.findSubjectByName(category);
-        } else {
-            throw new NotFoundException("Cant find subject");
-        }
+    @Path("search")
+    public Response getSubjectStudentsTeacherBySubjectName(@QueryParam("name") String name) {
+        List<Subject> foundSubjects = subjectService.getSubjectStudentsTeacherBySubjectName(name);
+        if(foundSubjects.isEmpty()) {
+            throw new NotFoundException("NoRecordInDatabaseWithSubjectName:" +name); }
+        return Response.ok(foundSubjects).build();
     }
 
     @GET
-    @Path("getStudentsBySubjectName/{name}")
-    public List<Student> getStudentsPerSubject(@PathParam("name") String name){
-        try{
-            return subjectService.findStudentsBySubject(name);}
-        catch(NoResultException e){
-            throw new NotFoundException("Not found matches to given subject. Make sure you spell subject's name right and that subject is registered");
-        }
-    }
-
-    @GET
-    @Path("getallsubjects")
-    public List<Subject> getAllSubjects() {
-        return subjectService.getAllSubjects();
+    @Path("")
+    public Response getAllSubjects() {
+        List<Subject> foundSubjects = subjectService.getAllSubjects();
+        if (foundSubjects.isEmpty()) {
+            throw new se.iths.exception.NotFoundException("DatabaseIsEmpty");
+        } else
+            return Response.ok(foundSubjects).build();
     }
 
     @POST
-    @Path("create")
+    @Path("")
     public Response createNewSubject(Subject subject){
+        if (subject.getName().isEmpty()) {
+            throw new NotAcceptableExecption("NameNeedsToBeFilledIn");
+        }
         subjectService.createNewSubject(subject);
         return Response.ok(subject).build();
     }
