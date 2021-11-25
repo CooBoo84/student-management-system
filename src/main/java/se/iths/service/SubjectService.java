@@ -14,6 +14,10 @@ public class SubjectService {
     @PersistenceContext
     EntityManager entityManager;
 
+    public Subject findSubjectById(Long id) {
+        return entityManager.find(Subject.class, id);
+    }
+
     public Subject createNewSubject(Subject subject) {
         entityManager.persist(subject);
         return subject;
@@ -27,5 +31,15 @@ public class SubjectService {
         return entityManager
                 .createQuery("SELECT s FROM Subject s WHERE s.name =\'" + subject + "\'", Subject.class)
                 .getResultList();
+    }
+
+    public Subject updateSubject(Subject subject) {
+        entityManager.merge(subject);
+        return subject;
+    }
+
+    public void deleteSubject(Long id) {
+        Subject foundSubject = entityManager.find(Subject.class, id);
+        entityManager.remove(foundSubject);
     }
 }

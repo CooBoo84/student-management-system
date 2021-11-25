@@ -53,17 +53,23 @@ public class TeacherService {
         entityManager.remove(foundTeacher);
     }
 
-    public boolean foundTeachertByName(String tName) {
-        List<Teacher> foundOnes = entityManager.createQuery("SELECT t from Teacher t where t.firstname like :tName", Teacher.class).setParameter("tName", tName).getResultList();
-        if(foundOnes.size() > 0)
+    public boolean foundTeacherByName(String teacherName) {
+        List<Teacher> foundOnes = entityManager.createQuery("SELECT t from Teacher t where t.firstName like :teacherName", Teacher.class)
+                .setParameter("teacherName", teacherName).getResultList();
+        if(foundOnes.size() > 0) {
             return true;
-        else return false;
+        }else {
+            return false;
+        }
     }
 
-    public boolean foundSubjectByName(String sName) {
-        List<Subject> foundOnes = entityManager.createQuery("SELECT s from Subject s where s.name like :sName", Subject.class).setParameter("sName", sName).getResultList();
-        if(foundOnes.size() > 0)
+    public boolean foundSubjectByName(String subjectName) {
+        List<Subject> foundOnes = entityManager.createQuery("SELECT s from Subject s where s.name like :subjectName", Subject.class)
+                .setParameter("subjectName", subjectName).getResultList();
+        if (foundOnes.size() > 0) {
             return true;
-        else return false;
+        } else {
+            return false;
+        }
     }
 }

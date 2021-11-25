@@ -6,6 +6,7 @@ import se.iths.entity.Teacher;
 import se.iths.exception.NotAcceptableExecption;
 import se.iths.exception.NotFoundException;
 import se.iths.service.TeacherService;
+import se.iths.verifiers.TeacherVerifier;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -20,6 +21,9 @@ public class TeacherRest {
 
     @Inject
     TeacherService teacherService;
+
+    @Inject
+    TeacherVerifier teacherVerifier;
 
     @GET
     @Path("{id}")
@@ -52,10 +56,10 @@ public class TeacherRest {
     @GET
     @Path("getstudentbysubjectandteacher/{subject}/{teacher}")
     public List<Student> getStudentBySubjectAndTeacher(@PathParam("subject") String subject, @PathParam("teacher") String teacher){
-        if(verifyThatTeacherAndSubjectExists(teacherService.foundTeachertByName(teacher),teacherService.foundSubjectByName(subject)))
+        if(teacherVerifier.verifyThatTeacherAndSubjectExists(teacherService.foundTeacherByName(teacher),teacherService.foundSubjectByName(subject)))
             return teacherService.getSpecifiedStudentsPerSubjectandTeacher(subject,teacher);
         else{
-            throw new NotFoundException("One or more parameters match no result. Make sure you spell both subject's name and teacher's first name right, as well as both exists in registry");
+            throw new NotFoundException("OneOrMoreParametersMatchNoResult");
         }
     }
 
@@ -97,24 +101,6 @@ public class TeacherRest {
         if (teacherService.findTeacherById(id) == null) {
             throw new NotFoundException("Delete-NoRecordWithId: " + id);
         }
-        teacherService.deleteTeacher(id);
-        return Response.ok().build();
-    }
-
-    public Boolean verifyThatTeacherAndSubjectExists(Boolean teacher, Boolean subject){
-        Boolean bothExists = null;
-        if(teacher && subject)
-            bothExists = true;
-        if (!teacher && subject){
-            bothExists = false;
-        }
-        if (!subject && teacher){
-            bothExists = false;
-        }
-        else if (!subject && !teacher) {
-            bothExists = false;
-        }
-        return bothExists;
-
+        return teacherVerifier.TeacherExist(teacherService.findTeacherById(id), teacherService);
     }
 }

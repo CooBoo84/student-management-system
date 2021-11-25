@@ -1,13 +1,12 @@
 package se.iths.rest;
 
-import se.iths.entity.Student;
 import se.iths.entity.Subject;
 import se.iths.exception.NotAcceptableExecption;
 import se.iths.exception.NotFoundException;
 import se.iths.service.SubjectService;
+import se.iths.verifiers.SubjectVerifier;
 
 import javax.inject.Inject;
-import javax.persistence.NoResultException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -20,6 +19,18 @@ public class SubjectRest {
 
     @Inject
     SubjectService subjectService;
+
+    @Inject
+    SubjectVerifier subjectVerifier;
+
+    @GET
+    @Path("{id}")
+    public Response getSubject(@PathParam("id") Long id){
+        Subject foundSubject = subjectService.findSubjectById(id);
+        if (foundSubject == null) {
+            throw new NotFoundException("NoRecordOfId: " +id); }
+        return Response.ok(foundSubject).build();
+    }
 
     @GET
     @Path("search")
@@ -48,5 +59,24 @@ public class SubjectRest {
         }
         subjectService.createNewSubject(subject);
         return Response.ok(subject).build();
+    }
+
+    @PUT
+    @Path("")
+    public Response updateSubject(Subject subject){
+        if (subject.getName().isEmpty()) {
+            throw new NotAcceptableExecption("Firstname-Invalid");
+        }
+        subjectService.updateSubject(subject);
+        return Response.ok(subject).build();
+    }
+
+    @DELETE
+    @Path("{id}")
+    public Response deleteSubject(@PathParam("id") Long id){
+        if (subjectService.findSubjectById(id) == null) {
+            throw new NotFoundException("Delete-NoRecordWithId: " + id);
+        }
+        return subjectVerifier.SubjectExist(subjectService.findSubjectById(id), subjectService);
     }
 }
