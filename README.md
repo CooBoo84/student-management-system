@@ -34,11 +34,17 @@ GET - http://localhost:8080/student-management-system/api/v1/students/
 ``
 GET - http://localhost:8080/student-management-system/api/v1/students/{id}
 ``
+| Example |
+| --- |
+| localhost:8080/student-management-system/api/v1/students/3 |
 
 ### Get a student by Lastname
 ``
 GET - http://localhost:8080/student-management-system/api/v1/students/search?lastName={lastName}
 ``
+| Example |
+| --- |
+| localhost:8080/student-management-system/api/v1/students/search?lastName=Mario |
 
 ### Create a new student
 ``
@@ -73,6 +79,9 @@ PUT - http://localhost:8080/student-management-system/api/v1/students/
 ``
 DELETE - http://localhost:8080/student-management-system/api/v1/students/{id}
 ``
+| Example |
+| --- |
+| localhost:8080/student-management-system/api/v1/students/1 |
 
 ## Subjects
 ### Get all subjects
@@ -84,11 +93,17 @@ GET - http://localhost:8080/student-management-system/api/v1/subjects/
 ``
 GET - http://localhost:8080/student-management-system/api/v1/subjects/{id}
 ``
+| Example |
+| --- |
+| localhost:8080/student-management-system/api/v1/subjects/2 |
 
 ### Get subjects, students and teacher by subject name
 ``
 GET - http://localhost:8080/student-management-system/api/v1/subjects/search?name={name}
 ``
+| Example |
+| --- |
+| localhost:8080/student-management-system/api/v1/subjects/search?name=Java |
 
 ### Create a new subject
 ``
@@ -107,16 +122,42 @@ PUT - http://localhost:8080/student-management-system/api/v1/subjects/
 ``
 - JSON-body
 ```
-{
-	"id": 7,
-	"name": "Spelprogrammering"
-}
+  {
+    "id": 2,
+    "name": "Spelprogrammering",
+    "students": [
+      {
+        "email": "super.mario@mail.com",
+        "firstName": "Super",
+        "id": 1,
+        "lastName": "Mario",
+        "phoneNumber": "010123456"
+      },
+      {
+        "email": "luigi@mail.com",
+        "firstName": "Luigi",
+        "id": 3,
+        "lastName": "Mario",
+        "phoneNumber": "010987654"
+      }
+    ],
+    "teacher": {
+      "email": "link.zelda@mail.com",
+      "firstName": "Link",
+      "id": 8,
+      "lastName": "Zelda",
+      "phoneNumber": "070134567"
+    }
+  }
 ```
 
 ### Delete a subject by ID
 ``
 DELETE - http://localhost:8080/student-management-system/api/v1/subjects/{id}
 ``
+| Example |
+| --- |
+| localhost:8080/student-management-system/api/v1/subjects/2 |
 
 ## Teachers
 ### Get all teachers
@@ -128,16 +169,25 @@ GET - http://localhost:8080/student-management-system/api/v1/teachers/
 ``
 GET - http://localhost:8080/student-management-system/api/v1/teachers/{id}
 ``
+| Example |
+| --- |
+| localhost:8080/student-management-system/api/v1/teachers/8 |
 
 ### Get a teacher by Lastname
 ``
 GET - http://localhost:8080/student-management-system/api/v1/teachers/search?lastName={lastName}
 ``
+| Example |
+| --- |
+| localhost:8080/student-management-system/api/v1/teachers/search?lastName=Zelda |
 
 ### Get Student by subject and teacher
 ``
 GET - http://localhost:8080/student-management-system/api/v1/teachers/getstudentbysubjectandteacher/{subject}/{teacher}
 ``
+| Example |
+| --- |
+| localhost:8080/student-management-system/api/v1/teachers/getstudentbysubjectandteacher/Python/Link |
 
 ### Create a new teacher
 ``
@@ -172,7 +222,9 @@ PUT - http://localhost:8080/student-management-system/api/v1/teachers/
 ``
 DELETE - http://localhost:8080/student-management-system/api/v1/teachers/{id}
 ``
-
+| Example |
+| --- |
+| localhost:8080/student-management-system/api/v1/teachers/8 |
 
 ## Contributing
 I did this myself for schoolproject.
