@@ -21,8 +21,8 @@ Subject3 = ("C",teacher2);
 
 ## Endpoints
 - [Students](#students)
-- [Teachers](#teachers)
 - [Subjects](#subjects)
+- [Teachers](#teachers)
 ---
 ## Students
 ### Get all students
@@ -72,6 +72,50 @@ PUT - http://localhost:8080/student-management-system/api/v1/students/
 ### Delete a student by ID
 ``
 DELETE - http://localhost:8080/student-management-system/api/v1/students/{id}
+``
+
+## Subjects
+### Get all subjects
+``
+GET - http://localhost:8080/student-management-system/api/v1/subjects/
+``
+
+### Get a subjects by ID
+``
+GET - http://localhost:8080/student-management-system/api/v1/subjects/{id}
+``
+
+### Get subjects, students and teacher by subject name
+``
+GET - http://localhost:8080/student-management-system/api/v1/subjects/search?name={name}
+``
+
+### Create a new subject
+``
+POST - http://localhost:8080/student-management-system/api/v1/subjects/
+``
+- JSON-body
+```
+{
+	"name": "Svenska"
+}
+```
+
+### Update subjects information
+``
+PUT - http://localhost:8080/student-management-system/api/v1/subjects/
+``
+- JSON-body
+```
+{
+	"id": 7,
+	"name": "Spelprogrammering"
+}
+```
+
+### Delete a subject by ID
+``
+DELETE - http://localhost:8080/student-management-system/api/v1/subjects/{id}
 ``
 
 ## Teachers
@@ -129,49 +173,6 @@ PUT - http://localhost:8080/student-management-system/api/v1/teachers/
 DELETE - http://localhost:8080/student-management-system/api/v1/teachers/{id}
 ``
 
-## Subjects
-### Get all subjects
-``
-GET - http://localhost:8080/student-management-system/api/v1/subjects/
-``
-
-### Get a subjects by ID
-``
-GET - http://localhost:8080/student-management-system/api/v1/subjects/{id}
-``
-
-### Get subjects, students and teacher by subject name
-``
-GET - http://localhost:8080/student-management-system/api/v1/subjects/search?name={name}
-``
-
-### Create a new subject
-``
-POST - http://localhost:8080/student-management-system/api/v1/subjects/
-``
-- JSON-body
-```
-{
-	"name": "Svenska"
-}
-```
-
-### Update subjects information
-``
-PUT - http://localhost:8080/student-management-system/api/v1/subjects/
-``
-- JSON-body
-```
-{
-	"id": 7,
-	"name": "Spelprogrammering"
-}
-```
-
-### Delete a subject by ID
-``
-DELETE - http://localhost:8080/student-management-system/api/v1/subjects/{id}
-``
 
 ## Contributing
 I did this myself for schoolproject.
